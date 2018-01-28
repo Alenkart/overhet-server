@@ -2,12 +2,7 @@
 
 const router = require('express').Router();
 const Articles = require('./../models/articles');
-
-router.get('/console', (req, res) => {
-	console.log(Articles);
-	res.send('sss');
-});
-
+const uploader = require('./../helpers/uploader'); 
 
 router.get('/api/articles', (req, res) => {
 
@@ -57,15 +52,18 @@ router.put('/api/articles', (req, res) => {
 
 	const article = new Articles(req.body);
 
-	article.save((err, result) => {
+	const image = req.files.image;
+	const dir = req.app.settings.__dirname;
 
-  		if (err) {
-  			res.json(err);
-  		} else {
-  			res.json(result);
-  		}
+	uploader(dir, article._id, image)
+		.then(filename => {
+			article.image = filename;
+			return article;		
+		})
+		.then(article => article.save())
+		.then(result => res.json(article))
+		.catch(err => res.json(err));
 
-  	});
 
 });
 

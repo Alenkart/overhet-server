@@ -2,6 +2,7 @@
 
 const router = require('express').Router();
 const Product = require('./../models/products');
+const uploader = require('./../helpers/uploader'); 
 
 router.get('/api/products', (req, res) => {
 
@@ -60,15 +61,17 @@ router.put('/api/products', (req, res) => {
 
 	const product = new Product(req.body);
 
-	product.save((err, result) => {
+	const image = req.files.image;
+	const dir = req.app.settings.__dirname;
 
-  		if (err) {
-  			res.json(err);
-  		} else {
-  			res.json(result);
-  		}
-
-  	});
+	uploader(dir, product._id, image)
+		.then(filename => {
+			product.image = filename;
+			return product;		
+		})
+		.then(product => product.save())
+		.then(result => res.json(product))
+		.catch(err => res.json(err));
 
 });
 

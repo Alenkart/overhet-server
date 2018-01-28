@@ -2,6 +2,7 @@
 
 const router = require('express').Router();
 const Sources = require('./../models/sources');
+const uploader = require('./../helpers/uploader'); 
 
 router.get('/api/sources', (req, res) => {
 
@@ -58,10 +59,17 @@ router.put('/api/sources', (req, res) => {
 
 	const source = new Sources(req.body);
 
-	source.save(err  => {
-  		if (err) return res.send(err);
-  	});
+	const image = req.files.image;
+	const dir = req.app.settings.__dirname;
 
+	uploader(dir, source._id, image)
+		.then(filename => {
+			source.image = filename;
+			return source;		
+		})
+		.then(source => source.save())
+		.then(result => res.json(source))
+		.catch(err => res.json(err));
 });
 
 router.delete('/api/sources/:id', (req, res) => {
