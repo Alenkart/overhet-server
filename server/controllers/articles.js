@@ -8,14 +8,17 @@ router.get('/api/articles', (req, res) => {
 
 	const hostname = req.headers.host;
 	
-	Articles.find({}).populate('source').then(articles => {
+	Articles
+		.find({ status : true })
+		.populate('source')
+		.then(articles => {
 
-		res.json( articles );
-		
-	}).catch(err => {
+			res.json( articles );
+			
+		}).catch(err => {
 
-		res.json( err );
-	});
+			res.json( err );
+		});
 
 });
 
@@ -23,28 +26,33 @@ router.get('/api/articles/:id', (req, res) => {
 	
 	const _id = req.params.id;
 
-	Articles.findOne({ _id }).populate('source').then(Articles => {
+	Articles
+		.findOne({ _id })
+		.populate('source')
+		.then(Articles => {
 	
-		res.json( Articles );
+			res.json( Articles );
 
-	}).catch(err => {
-		
-		res.json( err )
-	});
+		}).catch(err => {
+			
+			res.json( err )
+		});
 });
 
 router.post('/api/articles/:id', (req, res) => {
 
 	const _id = req.params.id;
 
-	Articles.update({ _id }, req.body).then(result => {
+	Articles
+		.update({ _id }, req.body)
+		.then(result => {
 
-		res.json(result);
+			res.json(result);
 
-	}).catch(err => {
+		}).catch(err => {
 
-		res.json(err);
-	});
+			res.json(err);
+		});
 
 });
 
@@ -54,10 +62,11 @@ router.put('/api/articles', (req, res) => {
 
 	const image = req.files.image;
 	const dir = req.app.settings.__dirname;
+	const hostname = `${req.protocol}://${req.headers.host}`;
 
 	uploader(dir, article._id, image)
 		.then(filename => {
-			article.image = filename;
+			article.image = `${hostname}/${filename}`;
 			return article;		
 		})
 		.then(article => article.save())
@@ -71,14 +80,16 @@ router.delete('/api/articles/:id', (req, res) => {
 	
 	const _id = req.params.id;
 
-	Articles.remove({ _id }).then(Articles => {
-	
-		res.json( Articles );
-
-	}).catch(err => {
+	Articles
+		.remove({ _id })
+		.then(Articles => {
 		
-		res.json( err )
-	});
+			res.json( Articles );
+
+		}).catch(err => {
+			
+			res.json( err )
+		});
 });
 
 router.schema = Articles;

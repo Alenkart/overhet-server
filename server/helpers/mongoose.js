@@ -1,10 +1,10 @@
 'use strict';
 
 //Import the mongoose module
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 //Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/my_database';
+const mongoDB = 'mongodb://127.0.0.1/overhet4';
 
 mongoose.connect(mongoDB);
 

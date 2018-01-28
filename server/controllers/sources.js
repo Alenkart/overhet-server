@@ -8,21 +8,16 @@ router.get('/api/sources', (req, res) => {
 
 	const hostname = req.headers.host;
 	
-	Sources.find({}).then(source => {
+	Sources
+		.find({ status : true })
+		.then(sources => {
 
-		return source.map(source => {
-			source.image = `${hostname}/public/img/${source.image}`;
-			return source;
+			res.json( sources );
+			
+		}).catch(err => {
+
+			res.json( err );
 		});
-
-	}).then(sources => {
-
-		res.json( sources );
-		
-	}).catch(err => {
-
-		res.json( err );
-	});
 
 });
 
@@ -30,28 +25,32 @@ router.get('/api/sources/:id', (req, res) => {
 	
 	const _id = req.params.id;
 
-	Sources.findOne({ _id }).then(source => {
+	Sources
+		.findOne({ _id })
+		.then(source => {
 	
-		res.json( source );
+			res.json( source );
 
-	}).catch(err => {
-		
-		res.json( err )
-	});
+		}).catch(err => {
+			
+			res.json( err )
+		});
 });
 
 router.post('/api/sources/:id', (req, res) => {
 
 	const _id = req.params.id;
 
-	Sources.update({ _id }, req.body).then(result => {
+	Sources
+		.update({ _id }, req.body)
+		.then(result => {
 
-		res.json(result);
+			res.json(result);
 
-	}).catch(err => {
+		}).catch(err => {
 
-		res.json(err);
-	});
+			res.json(err);
+		});
 
 });
 
@@ -61,10 +60,11 @@ router.put('/api/sources', (req, res) => {
 
 	const image = req.files.image;
 	const dir = req.app.settings.__dirname;
+	const hostname = `${req.protocol}://${req.headers.host}`;
 
 	uploader(dir, source._id, image)
 		.then(filename => {
-			source.image = filename;
+			source.image = `${hostname}/${filename}`;
 			return source;		
 		})
 		.then(source => source.save())
@@ -76,14 +76,16 @@ router.delete('/api/sources/:id', (req, res) => {
 	
 	const _id = req.params.id;
 
-	Sources.remove({ _id }).then(source => {
+	Sources
+		.remove({ _id })
+		.then(source => {
 	
-		res.json( source );
+			res.json( source );
 
-	}).catch(err => {
-		
-		res.json( err )
-	});
+		}).catch(err => {
+			
+			res.json( err )
+		});
 });
 
 module.exports = router;

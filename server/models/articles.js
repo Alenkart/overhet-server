@@ -4,9 +4,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Articles = new Schema({
-	title: String,
-	url: String,
-	description: String,
+	title: { 
+		type : String, 
+		default : 'An amazing title should be here' 
+	},
+	url: { 
+		type : String, 
+		default : '404' 
+	},
+	description: { 
+		type : String, 
+		default : 'An awesome title should be here' 
+	},
 	source: {
 		ref: 'Sources',
 		type: Schema.Types.ObjectId, 
@@ -15,6 +24,14 @@ const Articles = new Schema({
 		type : String, 
 		default : 'default.jpg' 
 	},
+	date: { 
+		type: Date, 
+		default: Date.now 
+	},
+	status: { 
+		type: Boolean, 
+		default: false 
+	}
 });
 
 module.exports = mongoose.model('Articles', Articles);

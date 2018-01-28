@@ -4,16 +4,25 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Products = new Schema({
-	title: String,
-	link: String,
-	description: String,
-	source: {
-		ref: 'Sources',
-		type: Schema.Types.ObjectId, 
+	title: { 
+		type : String, 
+		default : 'An amazing title should be here' 
+	},
+	link: { 
+		type : String, 
+		default : '404' 
 	},
 	url: { 
 		type : String, 
 		default : '404' 
+	},
+	description: { 
+		type : String, 
+		default : 'An awesome title should be here' 
+	},
+	source: {
+		ref: 'Sources',
+		type: Schema.Types.ObjectId, 
 	},
 	price: { 
 		type : Number, 
@@ -31,10 +40,18 @@ const Products = new Schema({
 		type: Date, 
 		default: Date.now 
 	},
+	type: {
+		type: String,
+		default: 'GAME'
+	},
 	status: { 
 		type: Boolean, 
-		default: 0 
+		default: false 
 	}
+});
+
+Products.virtual('imagePath').get(function() {
+	return 'localhost' + this.image;
 });
 
 module.exports = mongoose.model('Products', Products);

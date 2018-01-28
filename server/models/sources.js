@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Sources = new Schema({
-	image: String,
+	image: { 
+		type : String, 
+		default : 'default.jpg' 
+	},
 	name: {
 		type: String,
 		default: 'Overhet',
