@@ -1,0 +1,15 @@
+{
+  "name": "Overhet-server",
+  "version": "1.0.0",
+  "description": "Overhet nodejs server",
+  "main": "index.js",
+  "repository": "git remote add origin https://AlenkartR@bitbucket.org/overhet/overhet-server.git",
+  "author": "Alenkart Rodriguez",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.1"
+  }
+}
