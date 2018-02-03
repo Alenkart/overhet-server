@@ -23,6 +23,8 @@ app.use(require('./server/controllers/home'));
 app.use(require('./server/controllers/products'));
 app.use(require('./server/controllers/sources'));
 app.use(require('./server/controllers/articles'));
+app.use(require('./server/controllers/users'));
+app.use(require('./server/controllers/auth'));
 
 app.listen(app.settings.port, () => {
 	console.log(`app is listening on port ${app.settings.port}`);

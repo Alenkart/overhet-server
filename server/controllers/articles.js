@@ -22,6 +22,8 @@ router.get('/api/articles', (req, res) => {
 
 });
 
+router.use('/api/articles', require('./../middlewares/auth').roles('admin'));
+
 router.get('/api/articles/:id', (req, res) => {
 	
 	const _id = req.params.id;

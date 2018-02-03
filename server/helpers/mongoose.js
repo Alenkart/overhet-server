@@ -2,9 +2,10 @@
 
 //Import the mongoose module
 const mongoose = require('mongoose');
+const config = require('./../configs/db');
 
 //Set up default mongoose connection
-const mongoDB = 'mongodb://127.0.0.1/overhet4';
+const mongoDB = config.mongo;
 
 mongoose.connect(mongoDB);
 
