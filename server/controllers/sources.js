@@ -37,6 +37,8 @@ router.get('/api/sources/:id', (req, res) => {
 		});
 });
 
+router.use('/api/sources', require('./../middlewares/auth').roles('admin'));
+
 router.post('/api/sources/:id', (req, res) => {
 
 	const _id = req.params.id;
